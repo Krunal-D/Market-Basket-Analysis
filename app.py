@@ -40,7 +40,7 @@ aisles = load_data_from_drive(file_ids["aisles"], "aisles.csv")
 departments = load_data_from_drive(file_ids["departments"], "departments.csv")
 order_products_prior = load_data_from_drive(file_ids["order_products_prior"], "order_products_prior.csv")
 order_products_train = load_data_from_drive(file_ids["order_products_train"], "order_products_train.csv")
-orders = load_data_from_drive(file_ids["orders"], "orders.csv", nrows=300000)  # Load first 3 lakh rows
+orders = load_data_from_drive(file_ids["orders"], "orders.csv", nrows=100000)  # Load first 1 lakh rows
 products = load_data_from_drive(file_ids["products"], "products.csv")
 
 # ✅ Debug: Show available columns in orders dataset
