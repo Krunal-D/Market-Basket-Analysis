@@ -11,7 +11,7 @@ from mlxtend.frequent_patterns import apriori, association_rules
 st.set_page_config(page_title="Market Basket Analysis", layout="wide")
 
 # 📌 Title
-st.title("🛒 Market Basket Analysis & Customer Segmentation")
+st.title("🛒 Market Basket Analysis")
 
 # 📌 Google Drive File IDs
 file_ids = {
