@@ -13,24 +13,32 @@ st.set_page_config(page_title="Market Basket Analysis", layout="wide")
 # 📌 Title
 st.title("🛒 Market Basket Analysis & Customer Segmentation")
 
-# 📌 Load Data
-@st.cache_data
-def load_data():
-    aisles = pd.read_csv("datasets/aisles.csv")
-    departments = pd.read_csv("datasets/departments.csv")
-    order_products_prior = pd.read_csv("datasets/order_products__prior.csv")
-    order_products_train = pd.read_csv("datasets/order_products__train.csv")
-    orders = pd.read_csv("datasets/orders.csv")
-    products = pd.read_csv("datasets/products.csv")
-    return aisles, departments, order_products_prior, order_products_train, orders, products
+# 📌 Google Drive File IDs
+file_ids = {
+    "aisles": "1NOXMtLstWWokjndeC5JjLHOa2qt12j4g",
+    "departments": "1lmPkg7hYjQlD5MrPmQnYckHC5nrXW8fN",
+    "order_products_prior": "1Enrbqx-rtVHkqB8y0btit4xov2GtWmLE",
+    "order_products_train": "1oaaNlfCrbL03JHCfcFune6ZgUpSNseks",
+    "orders": "1oPGejhDdQ3t9-X14XAh6O1ElCx_nXUzS",
+    "products": "17LeYJdEdcrhXpWI6NnVHzvL8IQ3-eZPB"
+}
 
-aisles, departments, order_products_prior, order_products_train, orders, products = load_data()
+# 📌 Function to Download CSV from Google Drive
+@st.cache_data
+def load_data_from_drive(file_id):
+    url = f"https://drive.google.com/uc?id={file_id}"
+    return pd.read_csv(url)
+
+# 📌 Load Datasets
+aisles = load_data_from_drive(file_ids["aisles"])
+departments = load_data_from_drive(file_ids["departments"])
+order_products_prior = load_data_from_drive(file_ids["order_products_prior"])
+order_products_train = load_data_from_drive(file_ids["order_products_train"])
+orders = load_data_from_drive(file_ids["orders"])
+products = load_data_from_drive(file_ids["products"])
 
 # 📌 Data Cleaning
 orders["days_since_prior_order"].fillna(0, inplace=True)
-missing_products = set(order_products_prior["product_id"]) - set(products["product_id"])
-missing_aisles = set(products["aisle_id"]) - set(aisles["aisle_id"])
-missing_departments = set(products["department_id"]) - set(departments["department_id"])
 
 # Convert IDs to integer type
 for col in ["aisle_id", "department_id", "product_id", "order_id", "user_id"]:
