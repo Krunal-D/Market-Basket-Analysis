@@ -26,21 +26,21 @@ file_ids = {
 
 # 📌 Function to Download and Load CSV from Google Drive using gdown
 @st.cache_data
-def load_data_from_drive(file_id, filename):
+def load_data_from_drive(file_id, filename, nrows=None):
     url = f"https://drive.google.com/uc?export=download&id={file_id}"
     try:
         gdown.download(url, filename, quiet=False)  # Download file
-        return pd.read_csv(filename)  # Load into Pandas
+        return pd.read_csv(filename, nrows=nrows)  # Load only `nrows` rows
     except Exception as e:
         st.error(f"⚠️ Failed to download {filename}: {e}")
         return pd.DataFrame()  # Return empty DataFrame if download fails
 
-# 📌 Load Datasets
+# 📌 Load Datasets (Orders: Only First 300,000 Rows)
 aisles = load_data_from_drive(file_ids["aisles"], "aisles.csv")
 departments = load_data_from_drive(file_ids["departments"], "departments.csv")
 order_products_prior = load_data_from_drive(file_ids["order_products_prior"], "order_products_prior.csv")
 order_products_train = load_data_from_drive(file_ids["order_products_train"], "order_products_train.csv")
-orders = load_data_from_drive(file_ids["orders"], "orders.csv")
+orders = load_data_from_drive(file_ids["orders"], "orders.csv", nrows=300000)  # Load first 3 lakh rows
 products = load_data_from_drive(file_ids["products"], "products.csv")
 
 # ✅ Debug: Show available columns in orders dataset
