@@ -40,14 +40,13 @@ aisles = load_data_from_drive(file_ids["aisles"], "aisles.csv")
 departments = load_data_from_drive(file_ids["departments"], "departments.csv")
 order_products_prior = load_data_from_drive(file_ids["order_products_prior"], "order_products_prior.csv")
 order_products_train = load_data_from_drive(file_ids["order_products_train"], "order_products_train.csv")
-orders = load_data_from_drive(file_ids["orders"], "orders.csv", nrows=100000)  # Load first 1 lakh rows
+#orders = load_data_from_drive(file_ids["orders"], "orders.csv", nrows=100000)  # Load first  lakh rows
 products = load_data_from_drive(file_ids["products"], "products.csv")
 
 # ✅ Debug: Show available columns in orders dataset
-st.write("Columns in Orders Dataset:", orders.columns.tolist())
-
+#st.write("Columns in Orders Dataset:", orders.columns.tolist())
 # 📌 Ensure 'days_since_prior_order' exists before using it
-if "days_since_prior_order" in orders.columns:
+"""if "days_since_prior_order" in orders.columns:
     orders["days_since_prior_order"].fillna(0, inplace=True)
 else:
     st.error("⚠️ 'days_since_prior_order' is missing from Orders dataset! Check if orders.csv loaded correctly.")
@@ -84,7 +83,7 @@ if "order_hour_of_day" in orders.columns:
     plt.title("Orders Throughout the Day")
     st.pyplot(fig)
 else:
-    st.warning("⚠️ 'order_hour_of_day' column is missing!")
+    st.warning("⚠️ 'order_hour_of_day' column is missing!") """
 
 # 📌 Market Basket Analysis
 st.subheader("📈 Market Basket Analysis")
