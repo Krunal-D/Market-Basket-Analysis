@@ -37,8 +37,14 @@ order_products_train = load_data_from_drive(file_ids["order_products_train"])
 orders = load_data_from_drive(file_ids["orders"])
 products = load_data_from_drive(file_ids["products"])
 
-# 📌 Data Cleaning
-orders["days_since_prior_order"].fillna(0, inplace=True)
+# ✅ Debug: Print available columns in the orders dataset
+st.write("Columns in Orders Dataset:", orders.columns.tolist())
+
+# 📌 Check if 'days_since_prior_order' column exists before accessing it
+if "days_since_prior_order" in orders.columns:
+    orders["days_since_prior_order"].fillna(0, inplace=True)
+else:
+    st.error("⚠️ Column 'days_since_prior_order' is missing from Orders dataset!")
 
 # Convert IDs to integer type
 for col in ["aisle_id", "department_id", "product_id", "order_id", "user_id"]:
@@ -66,15 +72,6 @@ sns.countplot(x=orders["order_hour_of_day"], palette="viridis", ax=ax)
 plt.xlabel("Hour of the Day")
 plt.ylabel("Number of Orders")
 plt.title("Orders Throughout the Day")
-st.pyplot(fig)
-
-# 📌 Reordering Patterns
-st.subheader("🔄 Reordering Patterns")
-fig, ax = plt.subplots(figsize=(12, 5))
-sns.histplot(orders["days_since_prior_order"], bins=30, kde=True, color="teal", ax=ax)
-plt.xlabel("Days Since Prior Order")
-plt.ylabel("Frequency")
-plt.title("Reordering Patterns")
 st.pyplot(fig)
 
 # 📌 Top 10 Most Ordered Products
@@ -132,14 +129,19 @@ st.pyplot(fig)
 
 # 📌 Order Heatmap
 st.subheader("🔥 Order Heatmap: Hour vs. Days Since Prior Order")
-heatmap_data = orders.pivot_table(index="order_hour_of_day", columns="days_since_prior_order", aggfunc="size", fill_value=0)
 
-fig, ax = plt.subplots(figsize=(12, 6))
-sns.heatmap(heatmap_data, cmap="Blues", linewidths=0.5, ax=ax)
-plt.xlabel("Days Since Prior Order")
-plt.ylabel("Hour of the Day")
-plt.title("Order Heatmap")
-st.pyplot(fig)
+# ✅ Check if 'days_since_prior_order' exists before heatmap
+if "days_since_prior_order" in orders.columns:
+    heatmap_data = orders.pivot_table(index="order_hour_of_day", columns="days_since_prior_order", aggfunc="size", fill_value=0)
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+    sns.heatmap(heatmap_data, cmap="Blues", linewidths=0.5, ax=ax)
+    plt.xlabel("Days Since Prior Order")
+    plt.ylabel("Hour of the Day")
+    plt.title("Order Heatmap")
+    st.pyplot(fig)
+else:
+    st.warning("⚠️ Skipping heatmap: 'days_since_prior_order' column not found.")
 
 # 📌 Footer
 st.markdown("🚀 **Built with Streamlit**")
