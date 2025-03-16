@@ -38,7 +38,7 @@ def load_data_from_drive(file_id, filename, nrows=None):
 # 📌 Load Datasets (Orders: Only First 300,000 Rows)
 aisles = load_data_from_drive(file_ids["aisles"], "aisles.csv")
 departments = load_data_from_drive(file_ids["departments"], "departments.csv")
-order_products_prior = load_data_from_drive(file_ids["order_products_prior"], "order_products_prior.csv")
+#order_products_prior = load_data_from_drive(file_ids["order_products_prior"], "order_products_prior.csv")
 order_products_train = load_data_from_drive(file_ids["order_products_train"], "order_products_train.csv")
 #orders = load_data_from_drive(file_ids["orders"], "orders.csv", nrows=100000)  # Load first  lakh rows
 products = load_data_from_drive(file_ids["products"], "products.csv")
@@ -89,7 +89,7 @@ else:
 st.subheader("📈 Market Basket Analysis")
 
 # Convert transaction data for Apriori Algorithm
-transactions = order_products_prior.groupby("order_id")["product_id"].apply(list)
+transactions = order_products_train.groupby("order_id")["product_id"].apply(list)
 te = TransactionEncoder()
 te_ary = te.fit(transactions).transform(transactions)
 df = pd.DataFrame(te_ary, columns=te.columns_)
